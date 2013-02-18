@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mx:ApplicationControlBar 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	dock="true" horizontalGap="0"
+	fillAlphas="[0.9, Config.windowAlpha]"
+	enabled="false"
+	creationComplete="onCreationComplete()"
+>
+	<!-- 利用するアイコン類の定義を読み込んでおく -->
+	<mx:Script source="../../../ui/Icons.as" />
+
+	<!-- メニュー項目の管理機能を外部に提供するためのクラス -->
+	<!-- 各モードの定義と切り替えの対応をこちらに委譲している -->
+	<mx:Script source="MainMenuMembers.as" />
+
+	<!-- 一般に利用するメニュー -->
+	<mx:HBox id="mainMenuBody" width="100%" height="100%" visible="true">
+
+		<!-- メニューバー -->
+		<!-- メニュー項目の定義は(DataProvider)は -->
+		<!-- MainMenuItems.as側にあり、モードごとに変化します -->
+		<mx:MenuBar
+			id="mainMenuBar"
+			height="100%"
+			dataProvider="{mMenuItems}"
+			labelField="label"
+			itemClick="onSelectMenuItem(event)"
+		/>
+
+		<mx:Spacer width="20" />
+
+		<mx:Image id="zoomInButton" source="{zoomInIcon}" />
+		<mx:Image id="zoomOutButton" source="{zoomOutIcon}" />
+
+		<mx:Spacer width="20" />
+
+		<mx:Button id="displayPlayRoomInfoButton" label="ルームx：0名" enabled="false"/>
+		<mx:Button id="sharedMemo" label="共有メモ"	/>
+		<mx:Button id="openDrawWindow" label="手書き" toggle="true"	/>
+
+		<mx:Spacer width="50%" />
+
+		<mx:Button id="graveyard" label="墓場" />
+
+		<mx:Spacer width="50%" />
+
+		<mx:Button
+			id="mentenanceModeButton"
+			label="メンテナンスモード"
+			toggle="true"
+			visible="false"
+			width="0"
+		/>
+		<mx:Button icon="{logoutIcon}" label="ログアウト" click="onClickLogoutButton()" />
+
+	</mx:HBox>
+
+	<!-- セーブデータ再生用のシークバー -->
+	<!-- 通常では消えているので端から端まで上記のメニューバーが占有する -->
+	<!-- 表示状態になると上記のメニューバーを押して出てくる -->
+	<!-- この領域の広さはプログラム側で制御しているのでXMLでは0にしておく -->
+	<!-- TODO: しかしデバッグを考えるとそれらしいデフォルト値がいいのでは？ -->
+	<mx:HBox id="speedBox" width="0" height="100%" visible="false">
+		<mx:Label text="再生位置" />
+		<mx:HSlider id="replaySeekSlider" 
+			showTrackHighlight="true"
+			width="100%"
+			minimum="0" maximum="100" value="0"
+			toolTip="{replaySeekSlider.value}"
+		/>
+
+		<mx:Spacer width="10" />
+		<mx:Image id="pauseAndPlay" width="25" height="25" source="{pauseIcon}" />
+		<mx:Spacer width="10" />
+
+		<mx:Label text="早送り倍率" />
+		<mx:HSlider id="replaySpeedSlider" 
+			showTrackHighlight="true"
+			width="150"
+			minimum="0.1" maximum="10" value="1"
+			toolTip="{replaySpeedSlider.value}"
+			labels="['0.1', '10']"
+			labelOffset="0"
+		/>
+
+		<mx:CheckBox
+			id="isRepeat" label="繰り返し" selected="false"
+			visible="false" width="0"
+		/>
+	</mx:HBox>
+
+</mx:ApplicationControlBar>

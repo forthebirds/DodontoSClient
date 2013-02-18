@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mx:Object xmlns:mx="http://www.adobe.com/2006/mxml" >
+	<!-- DodontoSで一般に使う通常のグローエフェクト -->
+	<mx:Glow
+		id="normalGlowEffect" duration="1500" 
+		alphaFrom="1.0" alphaTo="0.0" 
+		blurXFrom="70.0" blurXTo="0.0" 
+		blurYFrom="70.0" blurYTo="0.0" 
+		color="0xFFFF00"
+	/>
+</mx:Object>

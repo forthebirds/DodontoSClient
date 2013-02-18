@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui_components:CommonPopupWindow
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:ui_components="ui.components.*" 
+	width="850"
+	height="470"
+	title="ログイン"
+>
+
+	<mx:Box id="infoBox" width="100%" height="140" >
+		<mx:TextArea id="loginMessage" htmlText="ロード中・・・" width="100%" height="100%" editable="false" />
+	</mx:Box>
+
+	<mx:Box
+		id="mainBox"
+		width="100%" height="100%" 
+		paddingTop="0" paddingBottom="0" 
+		paddingRight="0" paddingLeft="0" 
+	>
+		<mx:TabNavigator
+			id="playRoomStateTabs"
+			width="100%" height="20"
+			change="getPlayRoomStates()"
+			paddingTop="0" paddingBottom="0" 
+			paddingRight="0" paddingLeft="0" 
+			enabled="false"
+		/>
+
+		<mx:Box width="100%" height="100%" >
+			<mx:DataGrid
+				id="playRoomStateInfo"
+				width="100%"
+				height="100%"
+				dataProvider="{playRoomStates}"
+				editable="false"
+				draggableColumns="true"
+				click="clickPlayRoomStateInfo()"
+				itemRollOver="rollOverPlayRoomStateInfo(event)"
+				doubleClickEnabled="true"
+				doubleClick="login( getSelectedRoomNumber() )"
+				enabled="false"
+				allowMultipleSelection="true"
+			>
+				<mx:columns>
+					<mx:DataGridColumn headerText="No." dataField="index" textAlign="center" width="35" />
+					<mx:DataGridColumn headerText="プレイルーム名" dataField="playRoomName" textAlign="center" width="250" />
+					<mx:DataGridColumn headerText="ゲームシステム" dataField="gameName" textAlign="center" width="100" />
+					<mx:DataGridColumn headerText="入室人数" dataField="loginUserCount" textAlign="center" width="60" />
+					<mx:DataGridColumn headerText="パスワード" dataField="passwordLockState" textAlign="center" width="60" />
+					<mx:DataGridColumn headerText="見学" dataField="canVisit" textAlign="center" width="40" />
+					<mx:DataGridColumn headerText="最終更新時刻" dataField="lastUpdateTime" textAlign="center" width="140" />
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Box>
+
+		<mx:HBox width="100%" height="22" >
+			<mx:Label text="あなたのお名前（初回ログイン用）：" />
+			<mx:TextInput
+				id="yourName"
+				text=""
+				width="200" height="100%"
+				editable="true"
+				change="savePlayerInfo()"
+			/>
+
+			<mx:Spacer id="yourNameSpace" width="50" />
+
+			<mx:Label text="現在のログイン状況：" />
+			<mx:Button
+				id="currentAllLoginInfo"
+				label="0/0(0%)"
+				fontWeight="normal"
+				width="150"
+				click="showLoginInfo()"
+			/>
+
+			<mx:TextInput id="adminPassword" text="管理用パスワード" width="0" height="0" enabled="false" />
+
+			<mx:Spacer width="100%" />
+			<mx:MenuBar
+				id="helpMenuBar"
+				height="100%"
+				dataProvider="{menuArray}"
+				labelField="label"
+				itemClick="selectMenu(event)"
+			/>
+		</mx:HBox>
+
+		<mx:HBox id="extendBox" height="0" width="100%" horizontalAlign="center" verticalAlign="middle" visible="false" >
+			<mx:Spacer width="150" />
+			<mx:Button
+				id="removeOldPlayRoomButton"
+				label="古いプレイルームを削除"
+				click="this.removeOldPlayRoom()"
+				visible="{removeOldPlayRoomLimitDays > 0}"
+				fontWeight="normal"
+			/>
+			
+			<mx:Spacer width="100%" />
+			
+			<mx:Button label="リプレイ編集" click="editReplayData();" fontWeight="normal" />
+			<mx:Button label="リプレイ投稿" click="uploadReplayData();" fontWeight="normal" />
+			<mx:Button label="リプレイ再生" click="replaySessionRecord();" fontWeight="normal" />
+		</mx:HBox>
+
+		<mx:HBox height="30" width="100%" horizontalAlign="center" verticalAlign="middle">
+			<!-- 新規プレイルーム作成は初期状態では利用不能にしてあり、ログイン完了後に利用できるようになる -->
+			<mx:Button
+				id="createNewPlayRoomButton"
+				label="新規プレイルーム作成"
+				click="createPlayRoom()"
+				enabled="false"
+			/>
+
+			<mx:Spacer width="10%" />
+
+			<mx:Button
+				id="removePlayRoomButton"
+				label="指定プレイルームを削除"
+				click="this.removePlayRoom()"
+				fontWeight="normal"
+			/>
+
+			<mx:Spacer width="20%" />
+			<mx:Label text="プレイルームNo." />
+			<mx:TextInput id="roomNumberInput" text="0" width="50" />
+			<mx:Button id="loginButton" label="ログイン" click="login( parseInt(roomNumberInput.text) )" enabled="false" />
+
+			<mx:Spacer width="70%" />
+			<mx:Button id="extendButton" label="＞＞拡張機能" click="extend()"  enabled="false" fontWeight="normal" />
+		</mx:HBox>
+
+	</mx:Box>
+
+	<mx:HBox id="broadCastMessageBox" height="0" width="100%" enabled="false" visible="false" >
+		<mx:Box width="150" height="100%">
+			<mx:Label text="全部屋への一斉送信メッセージ" />
+			<mx:HBox width="100%" height="100%">
+				<mx:Label text="発言者："/>
+				<mx:TextInput
+					id="broadCastMessageName"
+					width="100%"
+					enabled="false"
+					visible="false"
+					text="システム管理者"
+				/>
+			</mx:HBox>
+		</mx:Box>
+		<mx:TextArea id="broadCastMessageText" height="100%" width="100%" enabled="false" visible="false" />
+		<mx:Button id="broadCastMessageButton" label="全部屋へ一斉発言" click="sendMessageAll()" enabled="false" visible="false" />
+	</mx:HBox>
+
+	<mx:Script source="LoginWindowMembers.as" />
+</ui_components:CommonPopupWindow>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui_components:ResizableWindow
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:ui_components="ui.components.*"
+	backgroundAlpha="1.0"
+	close="onClose()"
+>
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+
+			// 表示時にセンタリングするか否か
+			protected function isCentering() : Boolean
+			{
+				return true;
+			}
+
+
+			[Bindable]
+			static public var headerColorsArray:Array = [0x00CC66, 0x00CC66];
+
+			// --------------------------- ResizableWindowから継承
+			override protected function setup( ) : void
+			{
+				// setup時には必ず必要
+				super.setup( );
+				
+				// ステータステキストフィールド(=ヘッダ部分)の背景色を設定
+				statusTextField.background = true;
+				statusTextField.backgroundColor = 0xFFFFDD;
+
+				// 指定があれば領域の中心にポップアップさせる
+				if( isCentering() )
+				{
+					PopUpManager.centerPopUp( this );
+				}
+			}
+
+			// --------------------------- イベント関連
+			protected function onClose( ) : void
+			{
+				// 閉じるのでポップアップマネジャから削除しておく
+				// ポップアップウィンドウは二度と復活しないため
+				// 対応する再オープン時のコードは書いていない
+				// もし再表示を行うポップアップウィンドウがあるならば
+				// その処理は追加するべきである
+				PopUpManager.removePopUp( this );
+			}
+		]]>
+	</mx:Script>
+</ui_components:ResizableWindow>

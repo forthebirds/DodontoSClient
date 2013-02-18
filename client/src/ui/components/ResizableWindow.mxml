@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	backgroundAlpha="1.0"
+	backgroundColor="#F4FBFF"
+	borderStyle="solid"
+	close="closeEvent()"
+	creationComplete="creationComplete();"
+>
+
+	<!-- メンバ関数・メソッド 、それからstaticなメンバを読み込む-->
+	<mx:Script source="ResizableWindowMembers.as" />
+
+</mx:TitleWindow>
