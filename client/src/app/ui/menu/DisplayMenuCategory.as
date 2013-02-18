@@ -1,5 +1,8 @@
 package app.ui.menu 
 {
+	import flash.events.Event;
+	import app.Events;
+
 	// メインメニューのカテゴリ「表示」を管理するクラス
 	public class DisplayMenuCategory implements IMenuCategory
 	{
@@ -10,7 +13,99 @@ package app.ui.menu
 		{
 				
 		}
-		
+
+		private var mSetChatPaletteVisibility : Object =
+			{
+				label:"チャットパレット表示",
+				type:"check",
+				toggled:false,
+				event: new Event( Events.REQ_SET_CHAT_PALETTE_VISIBILITY )
+			};
+		private var mSetCounterRemoteControllerVisibility : Object =
+			{
+				label:"カウンターリモコン表示",
+				type:"check",
+				toggled:false,
+				event: new Event( Events.REQ_SET_COUNTER_REMOTE_CONTROLLER_VISIBILITY )
+			};
+		private var mSetChatVisibility : Object = 
+			{
+				label:"チャット表示",
+				type:"check",
+				toggled:true,
+				event: new Event( Events.REQ_SET_CHAT_VISIBILITY )
+			};
+		private var mSetDiceVisibility : Object =
+			{
+				label:"ダイス表示",
+				type:"check",
+				toggled:true,
+				event: new Event( Events.REQ_SET_DICE_VISIBILITY )
+			};
+		private var mSetInitiativeListVisibility : Object =
+			{
+				label:"イニシアティブ表示",
+				type:"check",
+				toggled:true,
+				event: new Event( Events.REQ_SET_INITIATIVE_LIST_VISIBILITY )
+			};
+		private var mSetStandingGraphicVisibility : Object =
+			{
+				label:"立ち絵表示",
+				type:"check",
+				toggled:true,
+				event: new Event( Events.REQ_SET_STANDING_GRAPHIC_VISIBILITY )
+			};
+		private var mSetCutInVisibility : Object =
+			{
+				label:"カットイン表示",
+				type:"check",
+				toggled:true,
+				event: new Event( Events.REQ_SET_CUTIN_VISIBILITY )
+			};
+		private var mSetPositionVisibility : Object =
+			{
+				label:"座標表示",
+				type:"check",
+				toggled:true,
+				event: new Event( Events.REQ_SET_POSITION_VISIBILITY )
+			};
+		private var mSetGridVisibility : Object =
+			{
+				label:"マス目表示",
+				type:"check",
+				toggled:true,
+				event: new Event( Events.REQ_SET_GRID_VISIBILITY )
+			};
+		private var mSetPieceSnap : Object =
+			{
+				label:"マス目にキャラクターを合わせる",
+				type:"check",
+				toggled:true
+			};
+		private var mSetAutoAdjustImageSize : Object =
+			{
+				label:"立ち絵のサイズを自動調整する",
+				type:"check",
+				toggled: true,
+				event: new Event( Events.REQ_SET_AUTO_ADJUST_IMAGE_SIZE )
+			};
+		private var mInitWindowState : Object =
+			{
+				label:"ウィンドウ配置初期化",
+				event: new Event( Events.REQ_INIT_WINDOW_STATE )
+			};
+		private var mInitLocalSaveData : Object =
+			{
+				label:"表示状態初期化",
+				event: new Event( Events.REQ_INIT_LOCAL_SAVE_DATA )
+			};
+		private var mChangeMap : Object =
+			{
+				label:"背景変更",
+				event: new Event( Events.REQ_CHANGE_MAP )
+			};
+
 		// --------------------------------- IMenuCategory実装
 		public function setModeDefault( ) : void
 		{
@@ -36,29 +131,24 @@ package app.ui.menu
 		private function getDefaultModeChildren( ) : Array
 		{
 			return [
-				{label:"チャットパレット表示", type:"check", toggled:false, callback: onSetChatPaletteVisibility},
-				{label:"カウンターリモコン表示", type:"check", toggled:false, callback: onSetCounterRemoteControllerVisibility},
+				mSetChatPaletteVisibility,
+				mSetCounterRemoteControllerVisibility,
 				{type:"separator"},
-
-				{label:"チャット表示", type:"check", toggled:true, callback: onSetChatVisibility},
-				{label:"ダイス表示", type:"check", toggled:true, callback: onSetDiceVisibility},
-				{label:"イニシアティブ表示", type:"check", toggled:true, callback: onSetInitiativeListVisibility},
+				mSetChatVisibility,
+				mSetDiceVisibility,
+				mSetInitiativeListVisibility,
 				{type:"separator"},
-
-				{label:"立ち絵表示", type:"check", toggled:true, callback: onSetStandingGraphicVisibility},
-				{label:"カットイン表示", type:"check", toggled:true, callback: onSetCutInVisibility },
+				mSetStandingGraphicVisibility,
+				mSetCutInVisibility,
 				{type:"separator"},
-
-				{label:"座標表示", type:"check", toggled:true, callback: onSetPositionVisibility },
-				{label:"マス目表示", type:"check", toggled:true, callback: onSetGridVisibility },
+				mSetPositionVisibility,
+				mSetGridVisibility,
 				{type:"separator"},
-
-				{label:"マス目にキャラクターを合わせる", type:"check", toggled:true, callback: onSetPieceSnap},
-				{label:"立ち絵のサイズを自動調整する", type:"check", toggled: true, callback: onSetAutoAdjustImageSize },
+				mSetPieceSnap,
+				mSetAutoAdjustImageSize,
 				{type:"separator"},
-
-				{label:"ウィンドウ配置初期化", callback: onInitWindowState },
-				{label:"表示状態初期化", callback: onInitLocalSaveData }
+				mInitWindowState,
+				mInitLocalSaveData
 			];
 		}
 		
@@ -66,63 +156,34 @@ package app.ui.menu
 		private function getTinyModeChildren( ) : Array
 		{
 			return [
-				{ label:"立ち絵のサイズを自動調整する", type:"check", toggled: true, callback: onSetAutoAdjustImageSize },
+				mSetAutoAdjustImageSize,
 				{ type:"separator" },
-				{ label:"背景変更", data:"changeMap" },
+				mChangeMap
 			];
 		}
-		
-		// --------------------------------- メニューのハンドラ
-		private function onSetChatPaletteVisibility( item : Object ) : void
-		{
-		}
-		
-		private function onSetCounterRemoteControllerVisibility( item : Object ) : void
-		{
-		}
-		
-		private function onSetChatVisibility( item : Object ) : void
-		{
-		}
-		
-		private function onSetDiceVisibility( item : Object ) : void
-		{
-		}
-		
-		private function onSetInitiativeListVisibility( item : Object ) : void
-		{
-		}
-		
-		private function onSetStandingGraphicVisibility( item : Object ) : void
-		{
-		}
-		
-		private function onSetCutInVisibility( item : Object ) : void
-		{
-		}
-		
-		private function onSetPositionVisibility( item : Object ) : void
-		{
-		}
-		
-		private function onSetGridVisibility( item : Object ) : void
-		{
-		}
-		
-		private function onSetPieceSnap( item : Object ) : void
-		{
-		}
-		
-		private function onSetAutoAdjustImageSize ( item : Object ) : void
-		{
-		}
-		
-		private function onInitWindowState( item : Object ) : void
-		{	
-		}
-		
-		private function onInitLocalSaveData( item : Object ) : void
-		{
-		}
+	}
+}	// package app.ui.menu
+
+// こういうクラスを作ってイベント発生時の動作管理まで行ったほうが良いかもしれない
+// 更に言えばメニューボタンクラス、メニュートグルクラスを作り
+// コンストラクタでlabel, toggleまでを受け付けるようにしてれば記述も楽に。
+// 抑々event値は状況によって発行したい物変わってくるしなぁ
+// onClickedを作ってcallbackをデフォルトにしたほうがいい？
+// その上で通常の動作として常に同じREQを送るクラスがあってもいいかもしれないが。
+// このアーキの部分には随分コストを掛けている。妥協し、そろそろ決定するべきだ。
+/*
+class ChatPaletteVisibilityMenuItem
+{
+	public var label : String = "チャットパレット表示";
+	public var type : String = "check";
+	public var toggled : Boolean = false;
+	public var event : Event = new Event( Events.REQ_SET_CHAT_PALETTE_VISIBILITY );
+
+	public function setVisibility( isVisible : Boolean ) : void
+	{
+		toggled = isVisible;
 	}
 }
+*/
+
+

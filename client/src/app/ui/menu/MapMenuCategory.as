@@ -1,8 +1,18 @@
 package app.ui.menu 
 {
+	import flash.events.Event;
+	import app.Events;
+	
 	// メインメニューのカテゴリ「マップ」を管理するクラス
 	public class MapMenuCategory implements IMenuCategory
 	{
+		private var mChangeMap : Object = {label:"マップ変更", event: new Event( Events.REQ_CHANGE_MAP) };
+		private var mChangeFloorTile : Object = {label:"フロアタイル変更モード", event: new Event( Events.REQ_CHANGE_FLOOR_TILE ) };
+		private var mAddMapMask : Object = {label:"マップマスク追加", event: new Event( Events.REQ_ADD_MAP_MASK ) };
+		private var mEasilyCreateMap : Object = {label:"簡易マップ作成", event: new Event( Events.REQ_EASILY_CREATE_MAP ) };
+		private var mSaveMapState : Object = {label:"マップ状態保存", event: new Event( Events.REQ_SAVE_MAP_STATE ) };
+		private var mLoadMapState : Object = {label:"マップ切り替え", event: new Event( Events.REQ_LOAD_MAP_STATE ) };
+
 		// --------------------------------- IMenuCategory実装
 		public function setModeDefault( ) : void
 		{
@@ -15,39 +25,14 @@ package app.ui.menu
 		public function getChildren() : Array
 		{
 			return [
-				{label:"マップ変更", callback: onClickChangeMap },
-				{label:"フロアタイル変更モード", callback: onClickChangeFloorTile },
-				{label:"マップマスク追加", callback: onClickAddMapMask },
-				{label:"簡易マップ作成", callback: onClickEasilyCreateMap },
+				mChangeMap,
+				mChangeFloorTile,
+				mAddMapMask,
+				mEasilyCreateMap,
 				{type:"separator"},
-				{label:"マップ状態保存", callback: onClickSaveMapState },
-				{label:"マップ切り替え", callback: onClickLoadMapState },
+				mSaveMapState,
+				mLoadMapState,
 			];
-		}
-		
-		// --------------------------------- コールバック実装	
-		private function onClickChangeMap( item : Object ) : void
-		{
-		}
-		
-		private function onClickChangeFloorTile( item : Object ) : void
-		{
-		}
-		
-		private function onClickAddMapMask( item : Object ) : void
-		{
-		}
-		
-		private function onClickEasilyCreateMap( item : Object ) : void
-		{
-		}
-		
-		private function onClickSaveMapState( item : Object ) : void
-		{
-		}
-		
-		private function onClickLoadMapState( item : Object ) : void
-		{
 		}
 	}
 }	// package ui.menu

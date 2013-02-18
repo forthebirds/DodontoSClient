@@ -1,8 +1,28 @@
 package app.ui.menu 
 {
+	import flash.events.Event;
+	import app.Events;
+	
 	// メインメニューのカテゴリ「コマ」を管理するクラス
 	public class PieceMenuCategory implements IMenuCategory
 	{
+		private var mAddCharacter : Object =
+			{label:"キャラクター追加", event: new Event( Events.REQ_ADD_CHARACTER ) };
+		private var mAddMagicRange : Object =
+			{label:"魔法範囲追加(D&D3版)", event: new Event( Events.REQ_ADD_MAGIC_RANGE ) };
+		private var mAddMagicRangeDD4th : Object =
+			{label:"魔法範囲追加(D&D4版)", event: new Event( Events.REQ_ADD_MAGIC_RANGE_DD4TH ) };
+		private var mAddMagicTimer : Object =
+			{label:"魔法タイマー追加", event: new Event( Events.REQ_ADD_MAGIC_TIMER ) };
+		private var mCreateChit : Object =
+			{label:"チット作成", event: new Event( Events.REQ_CREATE_CHIT ) };
+		private var mShowGraveyard : Object =
+			{label:"墓場", event: new Event( Events.REQ_SHOW_GRAVEYARD ) };
+		private var mShowCharacterWaitingRoom : Object =
+			{label:"キャラクター待合室", event: new Event( Events.REQ_SHOW_CHARACTER_WAITING_ROOM ) };
+		private var mSetRotateMarkerVisibility : Object =
+			{label:"回転マーカーを表示する", type:"check", toggled:true, event: new Event( Events.REQ_SHOW_CHARACTER_WAITING_ROOM ) };
+
 		// --------------------------------- IMenuCategory実装
 		public function setModeDefault( ) : void
 		{
@@ -15,51 +35,19 @@ package app.ui.menu
 		public function getChildren() : Array
 		{
 			return [
-					{label:"キャラクター追加", callback: onAddCharacter },
-					{label:"魔法範囲追加(D&D3版)", callback: onAddMagicRange },
-					{label:"魔法範囲追加(D&D4版)", callback: onAddMagicRangeDD4th },
-					{label:"魔法タイマー追加", callback: onAddMagicTimer },
+					mAddCharacter,
+					mAddMagicRange,
+					mAddMagicRangeDD4th,
+					mAddMagicTimer,
 					{type:"separator"},
-					{label:"チット作成", callback: onCreateChit },
+					mCreateChit,
 					{type:"separator"},
-					{label:"墓場", callback: onShowGraveyard },
-					{label:"キャラクター待合室", callback: onShowCharacterWaitingRoom },
+					mShowGraveyard,
+					mShowCharacterWaitingRoom,
 					{type:"separator"},
-					{label:"回転マーカーを表示する", callback: onSetRotateMarkerVisibility, type:"check", toggled:true},
+					mSetRotateMarkerVisibility,
 				];
 		}
-		
-		// --------------------------------- メニューのハンドラ
-		private function onAddCharacter( item : Object ) : void
-		{
-		}
-		
-		private function onAddMagicRange( item : Object ) : void
-		{
-		}
-		
-		private function onAddMagicRangeDD4th( item : Object ) : void
-		{
-		}
-		
-		private function onAddMagicTimer( item : Object ) : void
-		{
-		}
-		
-		private function onCreateChit( item : Object ) : void
-		{
-		}
-		
-		private function onShowGraveyard( item : Object ) : void
-		{
-		}
-		
-		private function onShowCharacterWaitingRoom( item : Object ) : void
-		{
-		}
-		
-		private function onSetRotateMarkerVisibility( item : Object ) : void
-		{
-		}
 	}
-}
+}	// package app.ui.menu
+

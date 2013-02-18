@@ -91,8 +91,8 @@ package {
 		
 		private function setupEventListeners( ) : void
 		{
-			// MainMenuからのイベント受け取りを設定する
-			mMainMenu.addEventListener( Events.REQ_LOGOUT.toString(), onSelectLogout );
+			// イベント受け取りを設定する
+			mMainMenu.addEventListener( Events.REQ_LOGOUT, onSelectLogout );
 		}
 			
 		private function login( ) : void
@@ -123,8 +123,8 @@ package {
 
 		private function onSelectLogout( ev : Event ) : void
 		{
-			mSession.logout( );
-			
+			// このメソッドはおそらくSessionクラスが本来は持つ
+
 			// 今のURLに再ログイン
 			var url : String = URLS.getLogoutURL( );
 			var request : URLRequest = new URLRequest( url );

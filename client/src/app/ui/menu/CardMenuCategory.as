@@ -7,9 +7,9 @@ package app.ui.menu
 	{
 		private var mSetCardsPickupVisibility : Object = {
 			label:"カードピックアップウィンドウ表示",
-			event: new Event( Events.REQ_SET_CARDS_PICKUP_VISIBILITY ),
 			type:"check",
-			toggled:false
+			toggled:false,
+			event: new Event( Events.REQ_SET_CARDS_PICKUP_VISIBILITY )
 		};
 		
 		private var mInitCardsPosture : Object = {

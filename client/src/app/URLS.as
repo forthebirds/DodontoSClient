@@ -3,6 +3,7 @@ package app
 	import mx.core.FlexGlobals;
 	import mx.utils.URLUtil;
 	
+	// このクラスはMonostateです。インスタンス化せずに各staticメソッドを用いて下さい。
 	public class URLS
 	{	
 		public function URLS() 

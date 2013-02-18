@@ -1,10 +1,22 @@
 package app.ui.menu 
 {
+	import flash.events.Event;
+	import app.Events;
+
 	// メインメニューのカテゴリ「画像」を管理するクラス
 	public class ImageMenuCategory implements IMenuCategory
 	{
 		// Tinyモードか否か。TinyモードではないならばDefaultモードである
 		private var mIsTinyMode : Boolean = false;
+
+		private var mImageFileUploader : Object =
+			{label:"ファイルアップローダー", event: new Event( Events.REQ_OPEN_IMAGE_FILE_UPLOADER ) };
+		private var mWebCameraCaptureUploader : Object =
+			{label:"WEBカメラ撮影", event: new Event( Events.REQ_OPEN_WEB_CAMERA_CAPTURE_UPLOADER ) };
+		private var mEditImageTag : Object =
+			{label:"タグ編集", event: new Event( Events.REQ_EDIT_IMAGE_TAG ) };
+		private var mDeleteImage : Object =
+			{label:"画像削除", event: new Event( Events.REQ_DELETE_IMAGE ) };
 		
 		// --------------------------------- IMenuCategory実装
 		public function setModeDefault( ) : void { mIsTinyMode = false; }
@@ -24,38 +36,21 @@ package app.ui.menu
 		private function getDefaultModeChildren( ) : Array
 		{
 			return [
-				{label:"ファイルアップローダー", callback: onClickImageFileUploader },
-				{label:"WEBカメラ撮影", callback: onClickWebCameraCaptureUploader },
+				mImageFileUploader,
+				mWebCameraCaptureUploader,
 				{type:"separator"},
-				{label:"タグ編集", callback: onClickEditImageTag },
-				{label:"画像削除", callback: onClickDeleteImage }
+				mEditImageTag,
+				mDeleteImage
 			];
 		}
 		
 		private function getTinyModeChildren( ) : Array
 		{
 			return [
-				{label:"ファイルアップローダー", data:"imageFileUploader"},
-				{label:"タグ編集", data:"openImageTagManager"},
-				{label:"画像削除", data:"deleteImage" }
+				mImageFileUploader,
+				mEditImageTag,
+				mDeleteImage
 			]
-		}
-		
-		// --------------------------------- コールバック実装	
-		private function onClickImageFileUploader( item : Object ) : void
-		{
-		}
-		
-		private function onClickWebCameraCaptureUploader( item : Object ) : void
-		{
-		}
-		
-		private function onClickEditImageTag( item : Object ) : void
-		{
-		}
-		
-		private function onClickDeleteImage( item : Object ) : void
-		{
 		}
 	}
 }	// package ui.menu
