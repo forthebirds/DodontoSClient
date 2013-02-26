@@ -6,7 +6,7 @@ package webapi
 	//! これらのそれぞれがどのような意味を持つのかは不明瞭なので考えること
 	//! あとloginMessageをGetLoginInfoに乗せるべきではないのではないか？
 	//! サーバサイドからの通達を送るWebAPIは別枠のAPIを準備して分散するべきではないか？
-	public class GetLoginInfoResponse : INetworkResponse
+	public class GetLoginInfoResponse implements INetworkResponse
 	{
 		public function GetLoginInfoResponse() 
 		{
