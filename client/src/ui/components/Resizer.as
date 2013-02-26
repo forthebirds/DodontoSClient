@@ -68,7 +68,6 @@ package ui.components
 		private static const CONST_MODE_RIGHT : uint = 2;
 		private static const CONST_MODE_TOP : uint = 4;
 		private static const CONST_MODE_BOTTOM : uint = 8;
-		private static const CONST_MODE_MOVE : uint = 11;
 		
 		private static var mResizeTarget : ResizableWindow;
 		private static var mResizeMode : uint = 0;
