@@ -2,6 +2,7 @@
 package {
 
 	import app.Events;
+	import app.GlobalEventSelector;
 	import flash.events.Event;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
@@ -55,6 +56,10 @@ package {
 		// 各モジュールの設定と初期化を済ませるメソッド
 		public function setup( dodontos : DodontoS ) : void
 		{
+			// グローバルイベントの受領先をDodontoSインスタンスにしておく
+			// これによりDodontoS上に含まれる全ての子ノードでのイベントを受け取り可能な場所ができる
+			GlobalEventSelector.setGlobalEventDispatcher( dodontos );
+			
 			// パラメタ情報を引き出しておく
 			var conf : Config = Config.getInstance();
 			conf.setParameters( dodontos.parameters );
