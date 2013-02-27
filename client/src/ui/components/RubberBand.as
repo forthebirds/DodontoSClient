@@ -24,6 +24,7 @@ package ui.components
 			super( );
 		}
 		
+		// 与えられたrectの位置・サイズになる
 		public function setRect( rect : Rectangle ) : void
 		{
 			x = rect.x;
