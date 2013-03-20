@@ -1,6 +1,8 @@
 package network.send 
 {
 	import network.ProtocolType;
+	import network.restful.RESTRequestMethod;
+	
 	public class JoinRoomSendMessage implements ISendMessage
 	{
 		// @param userID あるルームに参加するユーザのユーザID。それはあなたです！
@@ -17,27 +19,25 @@ package network.send
 		{
 			switch( protocol )
 			{
-			case ProtocolType.WebAPI:
-				return createMessageObject( );
+			case ProtocolType.WebAPI: return null;
 			default: return null;
 			}
 		}
 		
 		public function getWebAPIRelativeRequestAddress():String 
 		{
-			return "/room/login";
+			return "/room/" + mRoomID + "/login/" + mUserID;
 		}
 		
-		private createMessageObject( ) : Object
+		public function getWebAPIHTTPRequestMethod( ) : RESTRequestMethod
 		{
-			var message : Object = new Object( );
-			message[ "UserID" ] = mUserID;
-			message[ "RoomID" ] = mRoomID;
-			
-			return message;
+			return RESTRequestMethod.GET;
 		}
 		
 		// ログイン対象のルームID
 		private var mTargetRoomIndex : uint;
+		
+		private var mUserID : uint; // ユーザID
+		private var mRoomID : uint; // ルームID
 	}
 }

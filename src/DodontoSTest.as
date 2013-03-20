@@ -5,6 +5,9 @@ package
 	
 	import app.model.PlayerTest;
 	import app.model.PlayRoomTest;
+	import app.model.SessionTest;
+	
+	import app.ui.LoginWindowTest;
 	
 	// DodontoSにおけるすべてのテストを駆動するためのクラス。Monostate
 	public class DodontoSTest
@@ -18,6 +21,9 @@ package
 			
 			flexunit.run( PlayerTest );
 			flexunit.run( PlayRoomTest );
+			flexunit.run( SessionTest );
+			
+			flexunit.run( LoginWindowTest );
 		}
 		
 		// 各種のグローバルインスタンス群に依存して初めて動くことができるクラスがあります

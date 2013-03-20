@@ -8,6 +8,7 @@ package app
 	// DodontoF全体で用いるイベント定数の列挙。
 	// このイベント定数定義はアプリケーションとして意味のあるものを使う
 	// TODO: このイベント値は余り考察された適切なイベントではなく、ひたすらビューからイベントを追いだした結果であるため、体系化されていない。体系化し管理方式を洗練させるべき。
+	// TODO: というか、廃止したい
 	public class Events
 	{		
 		// セーブするようにリクエストされている
@@ -242,5 +243,11 @@ package app
 		public static const REQ_JUMP_OFFICIAL_SITE : String = "req_jump_official_site";
 		// オフィシャルサイトへジャンプした
 		public static const ON_JUMP_OFFICIAL_SITE : String = "jump_official_site";
+		
+		// ログインネットワークメッセージを受信した
+		public static const RECEIVED_LOGIN : String = "received_login";
+		
+		// ログアウトネットワークメッセージを受信した
+		public static const RECEIVED_LOGOUT : String = "received_logout";
 	}
 }
