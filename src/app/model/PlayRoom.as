@@ -7,6 +7,7 @@ package app.model
 	{	
 		public function PlayRoom() 
 		{
+			mIsLoaded = false;
 		}
 		
 		// グローバルな初期化メソッド
@@ -14,10 +15,10 @@ package app.model
 		// @param roomCount 取り扱う最大の部屋数を設定します。一般に何らかの経路でサーバから通知された部屋数を用います。
 		public static function initialize( roomCount : uint ) : void
 		{
-			mPlayRoom.length = count;
+			sPlayRoom.length = count;
 			for ( i : uint = 0; i < count; ++i )
 			{
-				mPlayRoom[ i ] = new PlayRoom( );
+				sPlayRoom[ i ] = new PlayRoom( );
 			}
 		}
 				
@@ -26,37 +27,59 @@ package app.model
 		// @return 部屋情報。必ずしもロード済みとは限りません。ロードを走らせるためにはloadPlayRoomを走らせてください
 		public static function getPlayRoom( roomIndex : int ) : PlayRoom
 		{
-			if ( roomIndex >= mPlayRoom.length ) return null;
-			return mPlayRoom[ roomIndex ];
+			if ( roomIndex >= sPlayRoom.length ) return null;
+			return sPlayRoom[ roomIndex ];
 		}
 		
 		// 指定された範囲の部屋の現在の状態をロードします。
 		// このルームロードは非同期に走るため、即座にアクセスしても結果が得られるとは限りません。
 		//　リクエストされた部屋情報のロードが完了したときに、引数に渡されたloadRoomCompleteメソッドが呼び出されます。
 		public static function loadPlayRoom(
-			startIndex : int, endRoomIndex : int,
+			startRoomIndex : int, endRoomIndex : int,
 			loadRoomComplete : Function
 		) : void
 		{
-			Network.sendMessage( new RoomStatusSendMessage( startIndex, endRoomIndex, loadRoomComplete ) );
+			Network.sendMessage(
+				new RoomStatusSendMessage(
+					startRoomIndex, endRoomIndex,
+					function( received : PlayRoomReceiveMessage ) : void
+					{
+						// 読み込んで設定する
+						for ( var i : uint = startIndex; (i < endRoomIndex) && (i < sPlayRoom.length); ++i )
+						{
+							sPlayRoom[ i ].mIsLoaded = true;
+							sPlayRoom[ i ].mMemberCount = received.getMemberCount( );
+						}
+						
+						// ロード完了したので予約されている関数を呼び出しておく
+						if ( loadRoomComplete != null )
+						{
+							loadRoomComplete( );
+						}
+					}
+				)
+			);
 		}
 		
 		// この部屋情報がすでにサーバと同期済みか否かを返します
 		public function isLoaded( ) : Boolean
 		{
-			// TODO: impl
-			return false;
+			return mIsLoaded;
 		}
 		
 		// この部屋に何人のユーザがログインしているかを返します
 		public function getMemberCount( ) : int
 		{
-			// TODO: impl
-			return 0;
+			return mMemberCount;
 		}
 		
 		// グローバルに共有される、読み込み済みのプレイルーム情報
-		private static var mPlayRoom : Vector.<PlayRoom> = new Vector.<PlayRoom>( );
+		private static var sPlayRoom : Vector.<PlayRoom> = new Vector.<PlayRoom>( );
+		
+		// ロード済みか否か
+		private var mIsLoaded : Boolean;
+		// メンバー数
+		private var mMemberCount : uint;
 	}
 
 }
