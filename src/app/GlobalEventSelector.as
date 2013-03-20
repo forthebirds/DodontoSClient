@@ -13,7 +13,7 @@ package app
 		// 通常の状況ではsetupで一度だけDodontoSが登録されます
 		// テスト時にはイベント受け取りのモックオブジェクトを登録します
 		// それ以外の設定は行わないでください。
-		public static function setGlobalEventDispatcher( dispatcher : IEventDispatcher ) : void
+		public static function setEventDispatcher( dispatcher : IEventDispatcher ) : void
 		{
 			mDispatcher = dispatcher;
 		}
@@ -21,8 +21,8 @@ package app
 		// グローバルなイベント受け取りを行うためのリスナーを追加します
 		// 引数の意味はIEventDispatcherの物に従います
 		// イベントリスナの生存管理はユーザコードにあります。
-		// removeGlobalEventListenerを忘れず呼び出してください。
-		public static function addGlobalEventListener(
+		// removeEventListenerを忘れず呼び出してください。
+		public static function addEventListener(
 			type : String,
 			listener : Function,
 			useCapture : Boolean = false,
@@ -34,7 +34,7 @@ package app
 		}
 		
 		// グローバルなイベントリスナの登録を解除します
-		public static function removeGlobalEventListener(
+		public static function removeEventListener(
 			type : String,
 			listener : Function,
 			useCapture : Boolean = false
@@ -44,7 +44,7 @@ package app
 		}
 		
 		// グローバルなイベントリスなが登録済みか調べます
-		public static function hasGlobalEventListener(
+		public static function hasEventListener(
 			type : String
 		) : Boolean
 		{

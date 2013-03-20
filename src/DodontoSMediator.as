@@ -10,10 +10,10 @@ package {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import mx.controls.treeClasses.TreeItemRenderer;
+	import network.Network;
 
 	import app.Config;
 	import app.URLS;
-	import app.Session;
 	import app.WindowSaveData;
 
 	import app.ui.MainPanel;
@@ -58,7 +58,7 @@ package {
 		{
 			// グローバルイベントの受領先をDodontoSインスタンスにしておく
 			// これによりDodontoS上に含まれる全ての子ノードでのイベントを受け取り可能な場所ができる
-			GlobalEventSelector.setGlobalEventDispatcher( dodontos );
+			GlobalEventSelector.setEventDispatcher( dodontos );
 			
 			// パラメタ情報を引き出しておく
 			var conf : Config = Config.getInstance();
@@ -78,18 +78,39 @@ package {
 			// イベント受け取りを登録する
 			setupEventListeners( );
 
-			// セッションを生成しておく
-			mSession = new Session( );
-
 			// デバッグログモードならデバッグログウィンドウを出しておく
 			if ( conf.getModes().isDebugLogMode( ) )
 			{
-				mMainPanel.popup( LogWindow );
+				mMainPanel.showPopup( LogWindow );
 			}
 			
 			// ログインを行う
 			// TODO: とりあえずこれは動作チェック用なので本番に向けて変更していくこと
 			login( );
+		}
+
+		// プレイルーム作成ウィンドウを表示する
+		// @param resultFunc ルーム作成の結果を受ける関数。Booleanの引数を一つ受けます。この値がtrueの時ルームが実際に作成されており、falseの時作成せずにキャンセルされています。
+		public function showCreatePlayRoomWindow( resultFunc : Function ) : void
+		{
+			// TODO: 
+			/*
+			var createPlayRoomWindow : CreatePlayRoomWindow =
+				mMainPanel.showMoodal( CreatePlayRoomWindow, true ) as CreatePlayRoomWindow;
+
+			createPlayRoomWindow.initParams(
+				-1, isNeedCreatePassword,
+				function( roomIndex : int ) : void
+				{
+					// プレイルームを作り終わったらそのルームナンバーへＵＲＬから直接ログイン
+					loginByRoomNumber( roomIndex );
+				},
+				function( ) : void
+				{
+					enableLoginButton( true );
+				}
+			);
+			*/
 		}
 
 		// ------------------------------------- Private method
@@ -102,7 +123,7 @@ package {
 			
 		private function login( ) : void
 		{
-			mMainPanel.popup( LoginWindow );
+			mMainPanel.showPopup( LoginWindow );
 		
 			// 「セッション」クラスは
 			// 待ちを出すわけでもないしLoginWindowからの
@@ -147,9 +168,9 @@ package {
 		// DodontoSのメインパネル
 		// 主なコンテンツを配置する一番広い領域
 		private var mMainPanel : MainPanel;
-
-		// 接続セッション。ログインしてログアウトするまで一連の接続情報を確保する
-		private var mSession : Session;
+		
+		// DodontoSで用いるネットワークの抽象。送受信のやり取りはすべてここを経由。
+		private var mNetwork : Network;
 	}
 
 }	// package

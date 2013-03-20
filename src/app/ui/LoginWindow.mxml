@@ -7,20 +7,16 @@
 	title="ログイン"
 >
 
+	<!-- サーバからの通知情報の表示欄。ロード中は固定の文言表示。 -->
 	<mx:Box id="infoBox" width="100%" height="140" >
 		<mx:TextArea id="loginMessage" htmlText="ロード中・・・" width="100%" height="100%" editable="false" />
 	</mx:Box>
 
-	<mx:Box
-		id="mainBox"
-		width="100%" height="100%" 
-		paddingTop="0" paddingBottom="0" 
-		paddingRight="0" paddingLeft="0" 
-	>
+	<mx:Box id="mainBox" width="100%" height="100%" paddingTop="0" paddingBottom="0" paddingRight="0" paddingLeft="0">
 		<mx:TabNavigator
 			id="playRoomStateTabs"
 			width="100%" height="20"
-			change="getPlayRoomStates()"
+			change="requestPlayRoomStates()"
 			paddingTop="0" paddingBottom="0" 
 			paddingRight="0" paddingLeft="0" 
 			enabled="false"
@@ -34,10 +30,10 @@
 				dataProvider="{playRoomStates}"
 				editable="false"
 				draggableColumns="true"
-				click="clickPlayRoomStateInfo()"
-				itemRollOver="rollOverPlayRoomStateInfo(event)"
+				click="onClickPlayRoomStateInfo( )"
+				itemRollOver="onRollOverPlayRoomStateInfo( event )"
 				doubleClickEnabled="true"
-				doubleClick="login( getSelectedRoomNumber() )"
+				doubleClick="login( getSelectedRoomNumber( ) )"
 				enabled="false"
 				allowMultipleSelection="true"
 			>
@@ -54,72 +50,60 @@
 		</mx:Box>
 
 		<mx:HBox width="100%" height="22" >
+			<!-- TODO: どどんとす的に「初回」ログインとは何になるか？ -->
 			<mx:Label text="あなたのお名前（初回ログイン用）：" />
-			<mx:TextInput
-				id="yourName"
-				text=""
-				width="200" height="100%"
-				editable="true"
-				change="savePlayerInfo()"
-			/>
 
-			<mx:Spacer id="yourNameSpace" width="50" />
+			<!-- プレイヤー名の入力欄 -->
+			<mx:TextInput id="playerName" text="" width="200" height="100%" editable="true" change="savePlayerInfo()" />
+
+			<mx:Spacer id="playerNameSpace" width="50" />
 
 			<mx:Label text="現在のログイン状況：" />
-			<mx:Button
-				id="currentAllLoginInfo"
-				label="0/0(0%)"
-				fontWeight="normal"
-				width="150"
-				click="showLoginInfo()"
-			/>
+			<!-- 現在のログイン人数と、サーバ許容人数の表示 -->
+			<mx:Button id="currentAllLoginUserCounts" label="0/0(0%)" fontWeight="normal" width="150" click="showLoginUserCounts()" />
 
+			<!-- 管理用パスワード入力欄 -->
 			<mx:TextInput id="adminPassword" text="管理用パスワード" width="0" height="0" enabled="false" />
 
 			<mx:Spacer width="100%" />
-			<mx:MenuBar
-				id="helpMenuBar"
-				height="100%"
-				dataProvider="{menuArray}"
-				labelField="label"
-				itemClick="selectMenu(event)"
-			/>
+			<!-- ログインウィンドウ上のヘルプメニュー -->
+			<!-- TODO: メインメニューと同様の動作を行うべきなので統一 -->
+			<mx:MenuBar id="helpMenuBar" height="100%" dataProvider="{mMenuArray}" labelField="label" itemClick="selectMenu(event)" />
 		</mx:HBox>
 
+		<!-- 拡張機能表示欄 -->
 		<mx:HBox id="extendBox" height="0" width="100%" horizontalAlign="center" verticalAlign="middle" visible="false" >
+
 			<mx:Spacer width="150" />
+
+			<!-- 全ての古いプレイルームを削除するボタン。 -->
+			<!-- 削除制限日数が指定されている場合だけ有効 -->
 			<mx:Button
 				id="removeOldPlayRoomButton"
 				label="古いプレイルームを削除"
-				click="this.removeOldPlayRoom()"
+				click="removeOldPlayRooms( )"
 				visible="{removeOldPlayRoomLimitDays > 0}"
 				fontWeight="normal"
 			/>
 			
 			<mx:Spacer width="100%" />
 			
-			<mx:Button label="リプレイ編集" click="editReplayData();" fontWeight="normal" />
-			<mx:Button label="リプレイ投稿" click="uploadReplayData();" fontWeight="normal" />
-			<mx:Button label="リプレイ再生" click="replaySessionRecord();" fontWeight="normal" />
+			<!-- リプレイ編集ボタン -->
+			<mx:Button label="リプレイ編集" click="onClickEditReplayData();" fontWeight="normal" />
+			<!-- リプレイ投稿ボタン -->
+			<mx:Button label="リプレイ投稿" click="onClickUploadReplayData();" fontWeight="normal" />
+			<!-- リプレイ再生ボタン -->
+			<mx:Button label="リプレイ再生" click="onClickPlayReplayData();" fontWeight="normal" />
 		</mx:HBox>
 
 		<mx:HBox height="30" width="100%" horizontalAlign="center" verticalAlign="middle">
 			<!-- 新規プレイルーム作成は初期状態では利用不能にしてあり、ログイン完了後に利用できるようになる -->
-			<mx:Button
-				id="createNewPlayRoomButton"
-				label="新規プレイルーム作成"
-				click="createPlayRoom()"
-				enabled="false"
-			/>
+			<mx:Button id="createPlayRoomButton" label="新規プレイルーム作成" click="onClickCreatePlayRoom()" enabled="false" />
 
 			<mx:Spacer width="10%" />
 
-			<mx:Button
-				id="removePlayRoomButton"
-				label="指定プレイルームを削除"
-				click="this.removePlayRoom()"
-				fontWeight="normal"
-			/>
+			<!-- 指定されたプレイルームを削除 -->
+			<mx:Button id="removePlayRoomButton" label="指定プレイルームを削除" click="this.onClickRemovePlayRoom( )" fontWeight="normal" />
 
 			<mx:Spacer width="20%" />
 			<mx:Label text="プレイルームNo." />
@@ -127,7 +111,7 @@
 			<mx:Button id="loginButton" label="ログイン" click="login( parseInt(roomNumberInput.text) )" enabled="false" />
 
 			<mx:Spacer width="70%" />
-			<mx:Button id="extendButton" label="＞＞拡張機能" click="extend()"  enabled="false" fontWeight="normal" />
+			<mx:Button id="extendButton" label="＞＞拡張機能" click="flipExtendMode( )"  enabled="false" fontWeight="normal" />
 		</mx:HBox>
 
 	</mx:Box>
@@ -137,13 +121,7 @@
 			<mx:Label text="全部屋への一斉送信メッセージ" />
 			<mx:HBox width="100%" height="100%">
 				<mx:Label text="発言者："/>
-				<mx:TextInput
-					id="broadCastMessageName"
-					width="100%"
-					enabled="false"
-					visible="false"
-					text="システム管理者"
-				/>
+				<mx:TextInput id="broadCastMessageName" width="100%" enabled="false" visible="false" text="システム管理者" />
 			</mx:HBox>
 		</mx:Box>
 		<mx:TextArea id="broadCastMessageText" height="100%" width="100%" enabled="false" visible="false" />
