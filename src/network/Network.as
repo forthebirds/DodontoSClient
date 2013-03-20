@@ -16,7 +16,7 @@ package network
 	public class Network 
 	{
 		// 現在のストラテジ
-		// NullStrategyにすることで考えることを無くす
+		// 初期値をNullStrategyにすることで考えることを無くす
 		private static var mStrategy : INetworkStrategy = new NullNetworkStrategy( );
 
 		// ネットワーク構成のストラテジを変更する
