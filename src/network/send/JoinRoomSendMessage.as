@@ -1,12 +1,11 @@
 package network.send 
 {
 	import network.ProtocolType;
-	public class LoginSendMessage implements ISendMessage
+	public class JoinRoomSendMessage implements ISendMessage
 	{
-		
-		// @param userID ログインするユーザのユーザID。それはあなたです！
-		// @param roomID ログインする対象のルームインデクス
-		public function LoginSendMessage( userID : uint, roomID : uint )
+		// @param userID あるルームに参加するユーザのユーザID。それはあなたです！
+		// @param roomID 参加する対象のルームインデクス
+		public function JoinRoomSendMessage( userID : uint, roomID : uint )
 		{
 			mUserID = userID;
 			mRoomID = roomID;

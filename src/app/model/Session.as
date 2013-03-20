@@ -1,6 +1,6 @@
 package app.model 
 {	
-	import network.send.LoginSendMessage;
+	import network.send.JoinRoomSendMessage;
 
 	// セッション・ログイン情報の管理を行うクラス
 	public class Session
@@ -23,7 +23,7 @@ package app.model
 		
 		public function login( ) : void
 		{	
-			var mes : LoginSendMessage = new LoginSendMessage( );
+			var mes : JoinRoomMessage = new JoinRoomMessage( );
 			// TODO: 具体的なパラメタ設定する
 			Network.sendMessage( mes );
 
