@@ -17,7 +17,7 @@ package network.restful
 		
 		public function RESTRequest( url : String = null )
 		{
-			this.url = url;
+			mRequest = new URLRequest( url );
 			method = RESTRequestMethod.GET;	// defaultはGET
 		}
 		

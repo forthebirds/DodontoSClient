@@ -1,5 +1,6 @@
 package  
 {
+	import app.GlobalEventSelectorTest;
 	import org.flexunit.runner.FlexUnitCore;
 	import org.flexunit.listeners.CIListener;
 	
@@ -7,10 +8,39 @@ package
 	import app.model.PlayRoomTest;
 	import app.model.SessionTest;
 	
+	import app.ui.MainPanelTest;
 	import app.ui.LoginWindowTest;
+	import app.ui.LogWindowTest;
 
+	import app.ConfigTest;
+	import app.GlobalEventSelectorTest;
+	import app.URLSTest;
+	import app.WindowSaveDataTest;
+	
+	import network.NetworkTest;
+	
+	import network.restful.RESTLoaderTest;
+	import network.restful.RESTRequestTest;
+	
+	import network.send.JoinRoomSendMessageTest;
+	import network.send.RoomStatusSendMessageTest;
+	
+	import network.receive.LoginReceiveMessageTest;
+	import network.receive.RoomStatusReceiveMessageTest;
+	
+	import network.protocol.CometProtocolTest;
+	import network.protocol.HTTPPollingProtocolTest;
+	import network.protocol.RTMFPProtocolTest;
 	import network.protocol.WebAPIProtocolTest;
+	
+	import network.strategy.NullNetworkStrategyTest;
 	import network.strategy.HTTPPollingNetworkStrategyTest;
+	
+	import ui.UIUtilsTest;
+	
+	import ui.components.ResizableWindowTest;
+	import ui.components.ResizerTest;
+	import ui.components.RubberBandTest;
 	
 	// DodontoSにおけるすべてのテストを駆動するためのクラス。Monostate
 	public class DodontoSTest
@@ -26,10 +56,41 @@ package
 			flexunit.run( PlayRoomTest );
 			flexunit.run( SessionTest );
 			
+			flexunit.run( LogWindowTest );
+			flexunit.run( MainPanelTest );
 			flexunit.run( LoginWindowTest );
-
+						
+			flexunit.run( ConfigTest );
+			flexunit.run( GlobalEventSelectorTest );
+			flexunit.run( URLSTest );
+			flexunit.run( WindowSaveDataTest );
+			
+			flexunit.run( NetworkTest );
+			
+			flexunit.run( RESTLoaderTest );
+			flexunit.run( RESTRequestTest );
+			
+			flexunit.run( LoginReceiveMessageTest );
+			flexunit.run( RoomStatusReceiveMessageTest );
+			
+			flexunit.run( JoinRoomSendMessageTest );
+			flexunit.run( RoomStatusSendMessageTest );
+			
+			flexunit.run( CometProtocolTest );
+			flexunit.run( HTTPPollingProtocolTest );
+			flexunit.run( RTMFPProtocolTest );
 			flexunit.run( WebAPIProtocolTest );
+			
+			flexunit.run( NullNetworkStrategyTest );
 			flexunit.run( HTTPPollingNetworkStrategyTest );
+			
+			flexunit.run( UIUtilsTest );
+			
+			flexunit.run( ResizableWindowTest );
+			flexunit.run( ResizerTest );
+			flexunit.run( RubberBandTest );
+			
+			flexunit.run( UtilsTest );
 		}
 		
 		// 各種のグローバルインスタンス群に依存して初めて動くことができるクラスがあります

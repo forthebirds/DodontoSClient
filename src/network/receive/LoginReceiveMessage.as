@@ -8,7 +8,7 @@ package network.receive
 	//! サーバサイドからの通達を送るWebAPIは別枠のAPIを準備して分散するべきではないか？
 	public class LoginReceiveMessage implements IReceiveMessage
 	{
-		public function GetLoginInfoResponse() 
+		public function LoginReceiveMessage( ) 
 		{
 			// TODO: apiurl = WebAPIアドレスの決定方法を考える
 		}
@@ -18,14 +18,16 @@ package network.receive
 		// そのようなことは起きないという前提で
 		// ユーザアクセスの一意の識別子として用いている
 		// ３６文字の文字列
-		public fucntion getUniqueID() : String
+		public function getUniqueID() : String
 		{
-			return mResponse[ "uniqueId" ];
+			// todo: impl
+			return null; // return mResponse[ "uniqueId" ];
 		}
 		
 		public function getVersion() : String
 		{
-			return mResponse[ "version" ];
+			// todo: impl
+			return null; // return mResponse[ "version" ];
 		}
 	}
 	

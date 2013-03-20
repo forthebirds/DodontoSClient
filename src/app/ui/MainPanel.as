@@ -7,17 +7,17 @@ package app.ui
 
 	public class MainPanel extends UIComponent
 	{
-		// $B%a%$%s%Q%M%kFb$K%]%C%W%"%C%W%&%#%s%I%&$rI=<($7$^$9(B
-		// $BLa$jCM$O;XDj$5$l$?%/%i%9$G$"$k$3$H$,J]>Z$5$l$k$N$G(B
-		// $B%-%c%9%H$7$FMxMQ$7$F$/$@$5$$(B
+		// メインパネル内にポップアップウィンドウを表示します
+		// 戻り値は指定されたクラスであることが保証されるので
+		// キャストして利用してください
 		public function showPopup( className : Class ) : IFlexDisplayObject
 		{
 			return PopUpManager.createPopUp( this, className, false );
 		}
 
-		// $B%a%$%s%Q%M%k$NCf$G%b!<%@%k$J%&%#%s%I%&$rI=<($7$^$9(B
-		// $BLa$jCM$O;XDj$5$l$?%/%i%9$G$"$k$3$H$,J]>Z$5$l$k$N$G(B
-		// $B%-%c%9%H$7$FMxMQ$7$F$/$@$5$$(B
+		// メインパネルの中でモーダルなウィンドウを表示します
+		// 戻り値は指定されたクラスであることが保証されるので
+		// キャストして利用してください
 		public function showModal( className : Class ) : IFlexDisplayObject
 		{
 			return PopUpManager.createPopUp( this, className, true );

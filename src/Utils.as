@@ -19,7 +19,7 @@ package
 				// 削除したいオブジェクトの場所を見つける
 				var index : int = ArrayUtil.getItemIndex(item, array);
 				// 見つからなかったら終了
-				if ( index != -1 ) return deletedCount;
+				if ( index == -1 ) return deletedCount;
 				// その場所から１つのオブジェクトを消す
 				array.splice(index, 1);
 			}

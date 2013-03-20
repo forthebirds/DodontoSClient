@@ -1,5 +1,6 @@
 package network.protocol 
 {
+	import network.send.ISendMessage;
 	// RTMFP経由の通信を行うプロトコルです
 	// RTMProtocolProtocolになってるけど前者と後者は意味付けが違うものです。
 	// (一般性のある通常の言葉としてのProtocolと、
@@ -12,6 +13,13 @@ package network.protocol
 		public function RTMFPProtocol() 
 		{
 			
+		}
+		
+		// ------------------ ISendProtocolから実装
+
+		public function sendMessage(message:ISendMessage, data:*, contentType:String):void 
+		{
+			// todo: impl
 		}
 		
 	}
