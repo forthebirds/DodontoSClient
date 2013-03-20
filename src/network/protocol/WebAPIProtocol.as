@@ -2,9 +2,9 @@ package network.protocol
 {
 	import flash.events.SoftKeyboardTrigger;
 	import flash.net.URLLoaderDataFormat;
-	import network.impls.RESTLoader;
-	import network.impls.RESTRequest;
-	import network.impls.RESTRequestMethod;
+	import network.restful.RESTLoader;
+	import network.restful.RESTRequest;
+	import network.restful.RESTRequestMethod;
 	import network.send.ISendMessage;
 
 	// HTTP経由の通信でWebAPIをクエリすることで
@@ -35,14 +35,14 @@ package network.protocol
 		public function sendMessage(
 			message : ISendMessage,
 			data : * ,
-			contentType : URLLoaderDataFormat
+			contentType : String
 		) : void
 		{
 			// リクエスト作成
 			var request : RESTRequest = new RESTRequest( );
 			
-			requset.url = mBaseURL + message.getWebAPIRelativeRequestAddress( );
-			request.method = message.getWebAPIRequestMethod( );
+			request.url = mBaseURL + message.getWebAPIRelativeRequestAddress( );
+			request.method = message.getWebAPIHTTPRequestMethod( );
 			
 			request.contentType = contentType;
 			request.data = data;
@@ -61,12 +61,12 @@ package network.protocol
 		private static var cWorkerCount : uint = 5;
 		
 		private var mBaseURL : String;	// ベースURL。未設定ではまともに動作しない。
-		private var mWorkers : Vector.<RestLoadWorker>;	// ワーカー。cWorkerCount == mWorkers.Length
+		private var mWorkers : Vector.<RESTLoadWorker>;	// ワーカー。cWorkerCount == mWorkers.Length
 		private var mRequestQueue : Vector.<RESTRequest>; // リクエストを保存しておくキュー
 		
 		private function enqueueRequest( request : RESTRequest ) : void
 		{
-			var worker ： RESTLoadWorker = searchUsableWorker( );
+			var worker : RESTLoadWorker = searchUsableWorker( );
 			if ( worker == null )
 			{
 				// 利用可能なものが無いのでキューに入れてそのうち送信されるさ、とあきらめるのさ。
@@ -78,25 +78,25 @@ package network.protocol
 		}
 		
 		// ワーカーで受信が完了したときに呼び出される
-		internal function onComplete( worker : RESETLoadWorker ) : void
+		public function onComplete( worker : RESTLoadWorker ) : void
 		{
 			// todo: 受信イベント発行
 			
 			// メッセージ内容の受信が完了したのでリサイクルする
 			worker.recycle( );
 			// 次があれば送信
-			sendNextMaybe( );
+			sendNextMaybe( worker );
 		}
 		
 		// ワーカーでエラーが発生した時に呼び出される
-		internal function onError( worker : RESETLoadWorker ) : void
+		public function onError( worker : RESTLoadWorker ) : void
 		{
 			// todo: エラーイベント発行
 			
 			// メッセージ内容の受信が完了したのでリサイクルする
 			worker.recycle( );
 			// 次があれば送信
-			sendNextMaybe( );
+			sendNextMaybe( worker );
 		}
 		
 		// 次のメッセージがあれば送信し、そうでなければ待機状態に入ります
@@ -105,7 +105,7 @@ package network.protocol
 			if ( mRequestQueue.length > 0 )
 			{
 				// リクエストが残っているので即座に再送信
-				RESTRequest request = mRequestQueue[ 0 ];
+				var request : RESTRequest = mRequestQueue[ 0 ];
 				// 送信対象は多重送信にならないように削除
 				mRequestQueue.shift( );
 				// ロードする
@@ -114,30 +114,36 @@ package network.protocol
 		}
 		
 		// 利用可能なワーカーがあれば獲得する。ないならnullを返す
-		private function searchUsableWorker( ) : RESETLoadWorker
+		private function searchUsableWorker( ) : RESTLoadWorker
 		{
 			for ( var i : uint = 0; i < cWorkerCount; ++i )
 			{
 				// 利用可能なものがあればこれを使う
 				// Mutexがなく、なんとなく恐いけど
 				// Flashは常にシングルスレッド動作しているのでこれで問題ないはず。
-				if ( !mWorkers[ i ].isUsable( ) ) return mWorkder[ i ];
+				if ( !mWorkers[ i ].isUsable( ) ) return mWorkers[ i ];
 			}
+			return null;
 		}
 		
 		
 	}
 }
 
-import network.impls.RESTLoader;
+
+	
+import network.protocol.WebAPIProtocol;
+import network.restful.RESTLoader;
+import network.restful.RESTRequest;
 import flash.events.Event;
 import flash.events.IOErrorEvent;
 
 // RESTLoaderとその利用情報をセットにして管理する通信ワーカー
-private class RESTLoadWorker
+class RESTLoadWorker
 {
-	public RESTLoadWorker( owner : WebAPIProtocol )
+	public function RESTLoadWorker( owner : WebAPIProtocol )
 	{
+		mOwner = owner;
 		initialize( );
 	}
 	
@@ -147,7 +153,7 @@ private class RESTLoadWorker
 	
 	public function isUsable( ) : Boolean { return (mLoader != null) && !mIsLoading; }
 	
-	private initialize( ) : void
+	private function initialize( ) : void
 	{
 		mLoader = new RESTLoader( );
 		mLoader.addEventListener( Event.COMPLETE, onComplete );
@@ -158,18 +164,17 @@ private class RESTLoadWorker
 		// mLoader.addEventListener( IOErrorEvent.NETWORK_ERROR, onError );
 		
 		mIsLoading = false;
-		mOwner = owner;
 	}
 	
 	// ワーカーを再利用するために前回の状態を破棄し、再生成を行います
-	public recycle( ) : void
+	public function recycle( ) : void
 	{
 		finalize( );
 		initialize( );
 	}
 	
 	// ワーカーを破棄します。
-	public finalize( ) : var
+	public function finalize( ) : void
 	{
 		mLoader.addEventListener( Event.COMPLETE, onComplete );
 		mLoader.addEventListener( IOErrorEvent.IO_ERROR, onError );
@@ -180,7 +185,7 @@ private class RESTLoadWorker
 	}
 	
 	// リクエストをRESTLoaderを使ってロードします
-	public load( request : RESTRequset ) : void
+	public function load( request : RESTRequest ) : void
 	{
 		// ASSERT( !mIsLoading );
 		
@@ -188,6 +193,6 @@ private class RESTLoadWorker
 		mLoader.load( request );
 	}
 	
-	private onComplete( ) : void { mOwner.onComplete( this ); }
-	private onError( ) : void { mOwner.onError( ); }
+	private function onComplete( ) : void { mOwner.onComplete( this ); }
+	private function onError( ) : void { mOwner.onError( this ); }
 }

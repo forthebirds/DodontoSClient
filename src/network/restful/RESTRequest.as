@@ -7,7 +7,6 @@ package network.restful
 	public class RESTRequest 
 	{
 		internal var mRequest : URLRequest;
-		private var mURL : String;
 		private var mMethod : RESTRequestMethod;
 		
 		private static const cPUTHeader : URLRequestHeader =
@@ -16,10 +15,10 @@ package network.restful
 		private static const cDELETEHeader : URLRequestHeader =
 			new URLRequestHeader("X-HTTP-Method-Override", "DELETE");
 		
-		public function RESTRequest( url : String )
+		public function RESTRequest( url : String = null )
 		{
-			mURL = url;
-			method = URLRequestMethod.GET;	// defaultはGET
+			this.url = url;
+			method = RESTRequestMethod.GET;	// defaultはGET
 		}
 		
 		public function set data( val : Object ) : void { mRequest.data = val ; }
@@ -28,7 +27,7 @@ package network.restful
 		public function set contentType( val : String ) : void { mRequest.contentType = val; }
 		public function get contentType( ) : String { return mRequest.contentType; }
 		
-		public function set url( val : String ) : void { mRequest.url = mURL; }
+		public function set url( val : String ) : void { mRequest.url = val; }
 		public function get url( ) : String { return mRequest.url; }
 		
 		// TODO: impl, あるいは無矛盾に保つのはとても難しいため,あえて提供しなくてもよいかもしれない。
@@ -39,28 +38,28 @@ package network.restful
 			mMethod = val;
 			
 			// 整合性のために既設定なPUT,DELETE用のヘッダを削除しておく。
-			Utils.deleteItemFromArray( cPUTHeader, mRequest.requestHeaders );
-			Utils.deleteItemFromArray( cDELETEHeader, mRequest.requestHeaders );
+			Utils.deleteItemFromArray( mRequest.requestHeaders, cPUTHeader );
+			Utils.deleteItemFromArray( mRequest.requestHeaders, cDELETEHeader );
 			
 			// RequestMethodごとにやること違うのでその辺。
 			switch( method )
 			{
-			case RequestMethod.GET:
+			case RESTRequestMethod.GET:
 				mRequest.method = URLRequestMethod.GET;
 				break;
 				
-			case RequestMethod.POST:
+			case RESTRequestMethod.POST:
 				mRequest.method = URLRequestMethod.POST;
 				break;
 				
-			case RequestMethod.PUT:
+			case RESTRequestMethod.PUT:
 				mRequest.method = URLRequestMethod.POST;
-				mRequest.requestHeaders.push( cPutHeader );
+				mRequest.requestHeaders.push( cPUTHeader );
 				break;
 				
-			case RequestMethod.DELETE:
+			case RESTRequestMethod.DELETE:
 				mRequest.method = URLRequestMethod.POST;
-				mRequest.requestHeaders.push( cDeleteHeader );
+				mRequest.requestHeaders.push( cDELETEHeader );
 				break;
 				
 			default:

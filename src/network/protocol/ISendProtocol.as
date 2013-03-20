@@ -1,5 +1,9 @@
 package network.protocol 
 {
+	import flash.net.URLLoaderDataFormat;
+	import network.send.ISendMessage;
+	
+	
 	// ネットワーク通信に用いる送信プロトコルのインタフェイス
 	// DodontoSにおいて各プロトコルは以下の4つの機能を提供する
 	// (エンコード・デコード)
@@ -18,10 +22,10 @@ package network.protocol
 		// 実際にはそれを妥当にISendMessageから引き出せるのはProtocolではなく
 		// JSON, MsgPackなどのエンコード様式を把握しているNetworkStrategyであるため、
 		// ISendProtocol実装者は指定された引数のほうを信用するべきである。
-		public function sendMessage(
+		function sendMessage(
 			message : ISendMessage,
-			data : *,
-			contentType : URLLoaderDataFormat
+			data : * ,
+			contentType : String
 		) : void;
 	}
 }

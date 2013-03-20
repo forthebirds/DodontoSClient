@@ -17,10 +17,10 @@ package network.restful
 			if ( request == null )
 				mLoader = new URLLoader( );
 			else
-				mLoader = new URLLoader( requset.mRequest );
+				mLoader = new URLLoader( request.mRequest );
 		}
 		
-		public function load( request : RESETRequest ) : void { mLoader.load( request.mRequest ); }
+		public function load( request : RESTRequest ) : void { mLoader.load( request.mRequest ); }
 		public function close( ) : void { mLoader.close( ); }
 		
 		public function addEventListener(
@@ -37,7 +37,7 @@ package network.restful
 		public function get bytesLoaded( ) : uint { return mLoader.bytesLoaded; }
 		public function get bytesTotal( ) : uint { return mLoader.bytesTotal; }
 		public function get data( ) : * { return mLoader.data; }
-		public function set dataFormat( val : String ) { mLoader.dataFormat; }
+		public function set dataFormat( val : String ) : void { mLoader.dataFormat; }
 		public function get dataFormat( ) : String { return mLoader.dataFormat; }
 	}
 

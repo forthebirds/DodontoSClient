@@ -8,6 +8,9 @@ package
 	import app.model.SessionTest;
 	
 	import app.ui.LoginWindowTest;
+
+	import network.protocol.WebAPIProtocolTest;
+	import network.strategy.HTTPPollingNetworkStrategyTest;
 	
 	// DodontoSにおけるすべてのテストを駆動するためのクラス。Monostate
 	public class DodontoSTest
@@ -24,6 +27,9 @@ package
 			flexunit.run( SessionTest );
 			
 			flexunit.run( LoginWindowTest );
+
+			flexunit.run( WebAPIProtocolTest );
+			flexunit.run( HTTPPollingNetworkStrategyTest );
 		}
 		
 		// 各種のグローバルインスタンス群に依存して初めて動くことができるクラスがあります

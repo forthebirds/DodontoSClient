@@ -14,5 +14,15 @@ package network.protocol
 		public function HTTPPollingProtocol() 
 		{
 		}
+		
+		public function setupPolling( ) : void
+		{
+			// todo: impl
+		}
+		
+		public function shutdownPolling( ) : void
+		{
+			// todo: impl
+		}
 	}
 }
