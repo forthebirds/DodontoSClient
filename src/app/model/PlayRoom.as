@@ -3,6 +3,8 @@ package app.model
 	import flash.sampler.NewObjectSample;
 	import network.Network;
 	import network.send.RoomStatusSendMessage;
+	import network.receive.RoomStatusReceiveMessage;
+	
 	public class PlayRoom 
 	{	
 		public function PlayRoom() 
@@ -15,11 +17,18 @@ package app.model
 		// @param roomCount 取り扱う最大の部屋数を設定します。一般に何らかの経路でサーバから通知された部屋数を用います。
 		public static function initialize( roomCount : uint ) : void
 		{
-			sPlayRoom.length = count;
-			for ( i : uint = 0; i < count; ++i )
+			sPlayRoom.length = roomCount;
+			for ( var i : uint = 0; i < roomCount; ++i )
 			{
 				sPlayRoom[ i ] = new PlayRoom( );
 			}
+		}
+		
+		// グローバルな終了メソッド
+		// このメソッドの呼び出しを行うと安全に終了できます
+		public static function finalize( ) : void
+		{
+			sPlayRoom.length = 0;
 		}
 				
 		// 部屋情報を返します
@@ -42,10 +51,10 @@ package app.model
 			Network.sendMessage(
 				new RoomStatusSendMessage(
 					startRoomIndex, endRoomIndex,
-					function( received : PlayRoomReceiveMessage ) : void
+					function( received : RoomStatusReceiveMessage ) : void
 					{
 						// 読み込んで設定する
-						for ( var i : uint = startIndex; (i < endRoomIndex) && (i < sPlayRoom.length); ++i )
+						for ( var i : uint = startRoomIndex; (i < endRoomIndex) && (i < sPlayRoom.length); ++i )
 						{
 							sPlayRoom[ i ].mIsLoaded = true;
 							sPlayRoom[ i ].mMemberCount = received.getMemberCount( );

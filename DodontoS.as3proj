@@ -41,7 +41,7 @@
     <option loadExterns="" />
     <option staticLinkRSL="True" />
     <option additional="src/DodontoS.mxml" />
-    <option compilerConstants="TEST::isTest,false&#xA;COMPILE::isGaeRuby,false&#xA;COMPILE::isGaeJava,false&#xA;COMPILE::isReplayer,false&#xA;COMPILE::isAir,false&#xA;COMPILE::isMySql,false" />
+    <option compilerConstants="TEST::runTests,true&#xA;COMPILE::isGaeRuby,false&#xA;COMPILE::isGaeJava,false&#xA;COMPILE::isReplayer,false&#xA;COMPILE::isAir,false&#xA;COMPILE::isMySql,false" />
     <option minorVersion="" />
   </build>
   <!-- SWC Include Libraries -->
@@ -51,6 +51,13 @@
   <!-- SWC Libraries -->
   <libraryPaths>
     <element path="" />
+    <element path="lib\flexunit-4.1.0-8-as3_4.1.0.16076.swc" />
+    <element path="lib\flexunit-4.1.0-8-flex_4.1.0.16076.swc" />
+    <element path="lib\flexunit-aircilistener-4.1.0-8-4.1.0.16076.swc" />
+    <element path="lib\flexunit-cilistener-4.1.0-8-4.1.0.16076.swc" />
+    <element path="lib\flexunit-flexcoverlistener-4.1.0-8-4.1.0.16076.swc" />
+    <element path="lib\flexunit-uilistener-4.1.0-8-4.1.0.16076.swc" />
+    <element path="lib\fluint-extensions-4.1.0-8-4.1.0.16076.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

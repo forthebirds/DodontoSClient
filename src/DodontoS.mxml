@@ -17,7 +17,7 @@
 	<!-- ダイスロール用の領域 -->
 	<s:Spacer width="100%" height="100%" x="0" y="0"/>
 
-	<!-- setup関数の定義があるActionScript -->
+	<!-- 初期化処理。Mediatorへの委譲前に関しては単純なものなので例外的にmxmlで実装。 -->
 	<fx:Script>
 		<![CDATA[
 			import mx.managers.PopUpManager;
@@ -26,9 +26,12 @@
 
 			private function setup() : void
 			{
+				if ( TEST::runTests ) DodontoSTest.runNormalTests( );
+				
 				var mediator : DodontoSMediator = DodontoSMediator.getInstance();
-
 				mediator.setup( this );
+				
+				if ( TEST::runTests ) DodontoSTest.runApplicationTests( );
 			}
 		]]>
 	</fx:Script>
