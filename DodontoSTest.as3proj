@@ -4,7 +4,7 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="DodontoS.swf" />
+    <movie path="DodontoSTest.swf" />
     <movie fps="30" />
     <movie width="1024" />
     <movie height="768" />
