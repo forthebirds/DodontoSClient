@@ -19,7 +19,7 @@ package network.send
 		{
 			switch( protocol )
 			{
-			case ProtocolType.WebAPI: return null;
+			case ProtocolType.WebAPI: return new Object();
 			default: return null;
 			}
 		}
