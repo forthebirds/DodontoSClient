@@ -23,7 +23,11 @@ package network.restful
 		
 		public function set data( val : Object ) : void { mRequest.data = val ; }
 		public function get data( ) : Object { return mRequest.data; }
-				
+		
+		// contentTypeのデフォルト値挙動はURLRequestのドキュメントとは一致しません！
+		// URLRequestのドキュメントでは、
+		// デフォルトが"application/x-www-form-urlencoded"と記載されているにも関わらず
+		// 実際のURLRequestからはnullが返ってくるようで、仕方ないのでRESTRequestもこの実装に従うことにしました。
 		public function set contentType( val : String ) : void { mRequest.contentType = val; }
 		public function get contentType( ) : String { return mRequest.contentType; }
 		
