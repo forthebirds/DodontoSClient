@@ -1,6 +1,8 @@
 package  
 {
 	import app.GlobalEventSelectorTest;
+	import org.flexunit.flexui.TestRunnerBase;
+	import org.flexunit.listeners.UIListener;
 	import org.flexunit.runner.FlexUnitCore;
 	import org.flexunit.listeners.CIListener;
 	
@@ -48,63 +50,70 @@ package
 		
 		// 通常のテストを登録する関数です
 		// @see runApplicationTest
-		public static function runNormalTests( ) : void
+		public static function runNormalTests( testRunner : TestRunnerBase ) : void
 		{
-			var flexunit : FlexUnitCore = createFlexUnitCore( );
+			var flexunit : FlexUnitCore = createFlexUnitCore( testRunner );
 			
-			flexunit.run( PlayerTest );
-			flexunit.run( PlayRoomTest );
-			flexunit.run( SessionTest );
+			flexunit.run(
+				PlayerTest,
+				PlayRoomTest,
+				SessionTest,
 			
-			flexunit.run( LogWindowTest );
-			flexunit.run( MainPanelTest );
-			flexunit.run( LoginWindowTest );
-						
-			flexunit.run( ConfigTest );
-			flexunit.run( GlobalEventSelectorTest );
-			flexunit.run( URLSTest );
-			flexunit.run( WindowSaveDataTest );
-			
-			flexunit.run( NetworkTest );
-			
-			flexunit.run( RESTLoaderTest );
-			flexunit.run( RESTRequestTest );
-			
-			flexunit.run( LoginReceiveMessageTest );
-			flexunit.run( RoomStatusReceiveMessageTest );
-			
-			flexunit.run( JoinRoomSendMessageTest );
-			flexunit.run( RoomStatusSendMessageTest );
-			
-			flexunit.run( CometProtocolTest );
-			flexunit.run( HTTPPollingProtocolTest );
-			flexunit.run( RTMFPProtocolTest );
-			flexunit.run( WebAPIProtocolTest );
-			
-			flexunit.run( NullNetworkStrategyTest );
-			flexunit.run( HTTPPollingNetworkStrategyTest );
-			
-			flexunit.run( UIUtilsTest );
-			
-			flexunit.run( ResizableWindowTest );
-			flexunit.run( ResizerTest );
-			flexunit.run( RubberBandTest );
-			
-			flexunit.run( UtilsTest );
+				LogWindowTest,
+				MainPanelTest,
+				LoginWindowTest,
+
+				ConfigTest,
+				GlobalEventSelectorTest,
+				URLSTest,
+				WindowSaveDataTest,
+
+				NetworkTest,
+				
+				RESTLoaderTest,
+				RESTRequestTest,
+
+				LoginReceiveMessageTest,
+				RoomStatusReceiveMessageTest,
+
+				JoinRoomSendMessageTest,
+				RoomStatusSendMessageTest,
+
+				CometProtocolTest,
+				HTTPPollingProtocolTest,
+				RTMFPProtocolTest,
+				WebAPIProtocolTest,
+
+				NullNetworkStrategyTest,
+				HTTPPollingNetworkStrategyTest,
+
+				UIUtilsTest,
+
+				ResizableWindowTest,
+				ResizerTest,
+				RubberBandTest,
+
+				UtilsTest
+			);
 		}
+		
 		
 		// 各種のグローバルインスタンス群に依存して初めて動くことができるクラスがあります
 		//　彼らのための下地をDodontoSMediatorが整えた後に走ってほしいテストはこちらに登録します
 		public static function runApplicationTests( ) : void
 		{
-			var flexunit : FlexUnitCore = createFlexUnitCore( );
+			// ApplicationレベルのテストではGUIを使うのは難しいと思われる
+			var flexunit : FlexUnitCore = createFlexUnitCore( null );
 		}
 		
 		// FlexUnitCoreに必要なリスナ類を追加して生成
-		private static function createFlexUnitCore( ) : FlexUnitCore 
+		// @param testRunner テストをGUIで表示するためのTestRunnerBase。nullでGUI表示を行わない
+		private static function createFlexUnitCore( testRunner : TestRunnerBase ) : FlexUnitCore 
 		{
 			var flexUnit : FlexUnitCore = new FlexUnitCore( );
 			flexUnit.addListener( new ResultsPanelListener() );
+			if( testRunner != null )
+				flexUnit.addListener( new UIListener( testRunner ) );
 
 			return flexUnit;
 		}

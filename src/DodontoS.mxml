@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <s:Application
+	xmlns:flexUnitUIRunner="http://www.adobe.com/2009/flexUnitUIRunner"
 	xmlns:fx="http://ns.adobe.com/mxml/2009"
 	xmlns:s="library://ns.adobe.com/flex/spark"
 	xmlns:mx="library://ns.adobe.com/flex/halo"
@@ -13,7 +14,7 @@
 
 	<!-- 各種のウィンドウを保持するメイン領域 -->
 	<app_ui:MainPanel id="mainPanel" x="0" y="0" width="100%" height="100%" />
-
+	
 	<!-- ダイスロール用の領域 -->
 	<s:Spacer width="100%" height="100%" x="0" y="0"/>
 
@@ -23,15 +24,22 @@
 			import mx.managers.PopUpManager;
 			import mx.controls.Alert;
 			import app.ui.LogWindow;
+			import org.flexunit.flexui.TestRunnerBase;
 
 			private function setup() : void
 			{
-				if ( CONFIG::debug ) DodontoSTest.runNormalTests( );
+				if ( CONFIG::debug )
+				{
+					DodontoSTest.runNormalTests( null );
+				}
 				
 				var mediator : DodontoSMediator = DodontoSMediator.getInstance();
 				mediator.setup( this );
 				
-				if ( CONFIG::debug  ) DodontoSTest.runApplicationTests( );
+				if ( CONFIG::debug )
+				{
+					DodontoSTest.runApplicationTests( );
+				}
 			}
 		]]>
 	</fx:Script>
